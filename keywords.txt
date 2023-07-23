@@ -1,0 +1,23 @@
+#######################################
+# Syntax Coloring Map For DiagTrx
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+DiagTrx	KEYWORD1
+DiagMessage	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+available	KEYWORD2
+readmessage	KEYWORD2
+begin	KEYWORD2
+end	KEYWORD2
+transmitWaiting	KEYWORD2
+destination	KEYWORD2
+length	KEYWORD2
+b	KEYWORD2
