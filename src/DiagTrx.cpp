@@ -29,7 +29,7 @@ bool DiagTrx::available() {
     clearBuffer();
   }
   // discard buffer if time since last byte timer has expired
-  if (rx_bytes > 0 && millis()-t_last_rx_byte >= 16) {
+  if (rx_bytes > 0 && millis()-t_last_rx_byte >= 5) {
     clearBuffer();
   }
   // if data is available, buffer it up
@@ -47,7 +47,7 @@ bool DiagTrx::available() {
     t_last_rx_byte = millis();
   }
   // assume bus is clear for sending after a short period of inactivity
-  if (tx_msg_waiting && millis()-t_last_rx_byte >= 16) {
+  if (tx_msg_waiting && millis()-t_last_rx_byte >= 5) {
     // send all bytes in the transmit buffer
     for (uint8_t b = 0; b < tx_bytes; b++) {
       serialPort->write(tx_buffer[b]);
@@ -68,23 +68,24 @@ bool DiagTrx::available() {
 
 
 // returns true if the receive buffer contains a valid Diag message
-// example message: 80 05 bf 18 00 00 22 (sender, length, destination, data(*3), checksum)
+// example message: E8 08 AO 88 FF FF FF 37 (ID, length, data(*5), checksum)
+//E8 04 1B F7
 bool DiagTrx::checkMessage() {
   // check if all bytes have been received
   if (rx_bytes > 1 && rx_bytes == rx_buffer[1]) {
-    uint8_t desti = rx_buffer[0];
-    uint8_t length = rx_buffer[1];
-    uint8_t chksum = desti ^ length;
-    for (uint8_t i = 2; i < length+1; i++) {
+    uint8_t ddesti = rx_buffer[0];
+    uint8_t dlength = rx_buffer[1];
+    uint8_t chksum = ddesti ^ dlength;
+    for (uint8_t i = 2; i < dlength-1; i++) {
       chksum = chksum ^ rx_buffer[i];
     }
-    if (rx_buffer[length+1] == chksum) {
+    if (rx_buffer[dlength-1] == chksum) {
       // checksums match, buffer contains a valid message
       return true;
     }
     else {
       // message received with invalid checksum: discard buffer  
-       clearBuffer();   
+      clearBuffer();   
       return false;
     }
   }

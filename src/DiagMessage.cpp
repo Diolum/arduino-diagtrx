@@ -14,6 +14,18 @@ DiagMessage::~DiagMessage() {
   delete[] m_buffer;
   m_buffer = NULL;
 }
+
+// returns the payload length of the message
+uint8_t DiagMessage::dlength() {
+  return m_buffer[1];
+}  
+  
+// returns the destination byte of the message
+uint8_t DiagMessage::ddestination() {
+  return m_buffer[0];
+}
+
+  
 // returns the n'th byte of the message payload
 uint8_t DiagMessage::b(uint8_t i) {
   if (i > m_buffer[1]-1){

@@ -21,7 +21,7 @@ class DiagTrx{
     void write(uint8_t message[]);
     bool available();
     bool transmitWaiting();
-    uint8_t length();
+    uint8_t dlength();
     DiagMessage readMessage();
 
   private:

@@ -5,7 +5,8 @@
 
 class DiagMessage{
   public:
-    uint8_t length();
+    uint8_t dlength();
+    uint8_t ddestination();
     uint8_t b(uint8_t n);
     DiagMessage(uint8_t *buffer);
     ~DiagMessage();
